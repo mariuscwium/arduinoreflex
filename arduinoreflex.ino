@@ -1,12 +1,18 @@
-int ledPin = 9;
+const int ledPin = 9;
+const int buttonPin = 8;
+
+int buttonState = 0;
 
 void setup() {
   pinMode(ledPin, OUTPUT);
+  pinMode(buttonPin, INPUT);
 }
 
 void loop() {
-  digitalWrite(ledPin, HIGH);
-  delay(1000);
-  digitalWrite(ledPin, LOW);
-  delay(1000);
+  buttonState = digitalRead(buttonPin);
+  if (buttonState == HIGH) {
+    digitalWrite(ledPin, HIGH);
+  } else {
+    digitalWrite(ledPin, LOW);
+  }
 }
