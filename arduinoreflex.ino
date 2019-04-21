@@ -1,31 +1,43 @@
 const int startLedPin = 13;
-const int playerLedPin = 9;
-const int buttonPin = 8;
+const int player1LedPin = 9;
+const int player2LedPin = 10;
+const int button1Pin = 8;
+const int button2Pin = 11;
 
-int buttonState = 0;
-bool listenToButton = false;
+int button1State = 0;
+int button2State = 0;
+bool listenToButtons = false;
+bool somebodyWon = false;
 
 void setup() {
-  pinMode(playerLedPin, OUTPUT);
-  pinMode(buttonPin, INPUT);
+  pinMode(player1LedPin, OUTPUT);
+  pinMode(player2LedPin, OUTPUT);
+  pinMode(button1Pin, INPUT);
+  pinMode(button2Pin, INPUT);
 }
 
 void loop() {
   
-  if(millis() > randomMillis()){
+  if(millis() > randomMillis() && !somebodyWon){
     digitalWrite(startLedPin, HIGH);
-    listenToButton = true;
+    listenToButtons = true;
   }
 
-  if(listenToButton){
-    buttonState = digitalRead(buttonPin);
-    if (buttonState == HIGH) {
-      digitalWrite(playerLedPin, HIGH);
-    } else {
-      digitalWrite(playerLedPin, LOW);
+  if(listenToButtons){
+    button1State = digitalRead(button1Pin);
+    if (button1State == HIGH && !somebodyWon) {
+      somebodyWon = true;
+      digitalWrite(player1LedPin, HIGH);
+    }
+    button2State = digitalRead(button2Pin);
+    if (button2State == HIGH && !somebodyWon) {
+      somebodyWon = true;
+      digitalWrite(player2LedPin, HIGH);
     }
   }
-
+  if(somebodyWon){
+    digitalWrite(startLedPin, LOW);
+  }
 }
 
 long unsigned randomMillis(){
